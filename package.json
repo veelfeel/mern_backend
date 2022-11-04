@@ -1,5 +1,5 @@
 {
-  "name": "e-commerce",
+  "name": "mern",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "veelfeel",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
