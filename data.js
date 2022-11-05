@@ -2,7 +2,7 @@ export default {
   products: [
     {
       _id: '689539',
-      imageUrl: 'images/Jax ACN-07HE.jpg',
+      imageUrl: '../images/Jax ACN-07HE.jpg',
       name: 'Cплит-система Jax ACN-07HE',
       price: 14280,
       countInStock: 1,
@@ -31,7 +31,7 @@ export default {
     },
     {
       _id: '699415',
-      imageUrl: 'images/Lanzkraft LSWH-20FC1NLSAH-20FC1N.webp',
+      imageUrl: '../images/Lanzkraft LSWH-20FC1NLSAH-20FC1N.webp',
       name: 'Cплит-система Lanzkraft Simple on-off LSWH-20FC1N/LSAH-20FC1N',
       price: 30000,
       countInStock: 2,
