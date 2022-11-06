@@ -3,7 +3,7 @@ export default {
     {
       _id: '689539',
       imageUrl: '../images/Jax ACN-07HE.jpg',
-      name: 'Cплит-система Jax ACN-07HE',
+      title: 'Cплит-система Jax ACN-07HE',
       price: 14280,
       countInStock: 1,
       type: 'standart',
@@ -32,7 +32,7 @@ export default {
     {
       _id: '699415',
       imageUrl: '../images/Lanzkraft LSWH-20FC1NLSAH-20FC1N.webp',
-      name: 'Cплит-система Lanzkraft Simple on-off LSWH-20FC1N/LSAH-20FC1N',
+      title: 'Cплит-система Lanzkraft Simple on-off LSWH-20FC1N/LSAH-20FC1N',
       price: 30000,
       countInStock: 2,
       type: 'standart',
@@ -51,7 +51,7 @@ export default {
     {
       _id: '1114842',
       imageUrl: 'https://via.placeholder.com/150',
-      name: 'Сплит-система инверторного типа BALLU BSLI-07HN1/EE/EU_20Y комплект',
+      title: 'Сплит-система инверторного типа BALLU BSLI-07HN1/EE/EU_20Y комплект',
       price: 43660,
       countInStock: 4,
       type: 'invertor',
@@ -70,7 +70,7 @@ export default {
     {
       _id: '1114844',
       imageUrl: 'https://via.placeholder.com/368.33x205/d6dcff',
-      name: 'Сплит-система BALLU BSAG-09HN1_20Y комплект',
+      title: 'Сплит-система BALLU BSAG-09HN1_20Y комплект',
       price: 35280,
       countInStock: 1,
       type: 'standart',
@@ -89,7 +89,7 @@ export default {
     {
       _id: '1114855',
       imageUrl: 'https://via.placeholder.com/368.33x205/d6dcff',
-      name: 'Сплит-система инверторного типа BALLU BSLI-12HN1/EE/EU_20Y комплект',
+      title: 'Сплит-система инверторного типа BALLU BSLI-12HN1/EE/EU_20Y комплект',
       price: 52390,
       countInStock: 3,
       type: 'invertor',
@@ -108,7 +108,7 @@ export default {
     {
       _id: '1114861',
       imageUrl: 'https://via.placeholder.com/368.33x205/d6dcff',
-      name: 'Сплит-система BALLU BSAG-24HN1_20Y комплект',
+      title: 'Сплит-система BALLU BSAG-24HN1_20Y комплект',
       price: 90830,
       countInStock: 3,
       type: 'standart',
@@ -127,7 +127,7 @@ export default {
     {
       _id: '1114868',
       imageUrl: 'https://via.placeholder.com/368.33x205/d6dcff',
-      name: 'Сплит-система BALLU BSD-07HN1_20Y комплект',
+      title: 'Сплит-система BALLU BSD-07HN1_20Y комплект',
       price: 31720,
       countInStock: 5,
       type: 'standart',
@@ -146,7 +146,7 @@ export default {
     {
       _id: '1114870',
       imageUrl: 'https://via.placeholder.com/368.33x205/d6dcff',
-      name: 'Сплит-система BALLU BSAG-12HN1_20Y комплект',
+      title: 'Сплит-система BALLU BSAG-12HN1_20Y комплект',
       price: 46240,
       countInStock: 2,
       type: 'standart',

@@ -1,13 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
-
-import data from './data.js';
 import config from './config.js';
 
-import { registerValidation, loginValidation } from './validation.js';
+import { registerValidation, loginValidation, productCreateValidation } from './validation.js';
 import { checkAuth, handleValidationErrors } from './utils/index.js';
-import { register, login, getMe } from './controllers.js';
+import { UserController, ProductController } from './controllers/index.js';
 
 mongoose
   .connect(config.MONGODB_URL, {
@@ -22,22 +20,27 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.post('/auth/register', registerValidation, handleValidationErrors, register);
-app.post('/auth/login', loginValidation, handleValidationErrors, login);
-app.get('/auth/me', checkAuth, getMe);
+app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
+app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
+app.get('/auth/me', checkAuth, UserController.getMe);
 
-app.get('/api/products', (req, res) => {
-  res.send(data.products);
-});
-
-app.get('/api/products/:id', (req, res) => {
-  const product = data.products.find((x) => x._id === req.params.id);
-  if (product) {
-    res.send(product);
-  } else {
-    res.status(404).send({ message: 'Product Not Found' });
-  }
-});
+app.post(
+  '/api/products',
+  checkAuth,
+  productCreateValidation,
+  handleValidationErrors,
+  ProductController.create,
+);
+app.get('/api/products', ProductController.getAll);
+app.get('/api/products/:id', ProductController.getOne);
+app.patch(
+  '/api/products/:id',
+  checkAuth,
+  productCreateValidation,
+  handleValidationErrors,
+  ProductController.update,
+);
+app.delete('/api/products/:id', checkAuth, ProductController.remove);
 
 app.listen(5000, (err) => {
   if (err) {
