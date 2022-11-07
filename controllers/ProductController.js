@@ -21,18 +21,27 @@ export const create = async (req, res) => {
 
 export const getAll = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) - 1 || 0;
+    const limit = parseInt(req.query.limit) || 5;
     const search = req.query.search || '';
-    // const page = req.query.page;
-    // const limit = req.query.limit;
     // const sort = req.query.sort;
 
-    const posts = await ProductModel.find({ title: { $regex: search, $options: 'i' } })
+    const products = await ProductModel.find({ title: { $regex: search, $options: 'i' } })
       // .sort({ price: 'asc' })
-      // .skip(8)
-      // .limit(4)
+      .skip(page * limit)
+      .limit(limit)
       .exec();
 
-    res.json(posts);
+    const total = await ProductModel.countDocuments({
+      title: { $regex: search, $options: 'i' },
+    });
+    const response = {
+      total,
+      limit,
+      products,
+    };
+
+    res.json(response);
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -43,11 +52,11 @@ export const getAll = async (req, res) => {
 
 export const getOne = async (req, res) => {
   try {
-    const postId = req.params.id;
+    const productId = req.params.id;
 
     ProductModel.findOne(
       {
-        _id: postId,
+        _id: productId,
       },
       (err, doc) => {
         if (err) {
@@ -76,11 +85,11 @@ export const getOne = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const postId = req.params.id;
+    const productId = req.params.id;
 
     await ProductModel.updateOne(
       {
-        _id: postId,
+        _id: productId,
       },
       {
         title: req.body.title,
@@ -102,11 +111,11 @@ export const update = async (req, res) => {
 
 export const remove = async (req, res) => {
   try {
-    const postId = req.params.id;
+    const productId = req.params.id;
 
     ProductModel.findOneAndDelete(
       {
-        _id: postId,
+        _id: productId,
       },
       (err, doc) => {
         if (err) {
