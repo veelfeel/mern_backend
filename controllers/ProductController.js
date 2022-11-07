@@ -21,7 +21,16 @@ export const create = async (req, res) => {
 
 export const getAll = async (req, res) => {
   try {
-    const posts = await ProductModel.find();
+    const search = req.query.search || '';
+    // const page = req.query.page;
+    // const limit = req.query.limit;
+    // const sort = req.query.sort;
+
+    const posts = await ProductModel.find({ title: { $regex: search, $options: 'i' } })
+      // .sort({ price: 'asc' })
+      // .skip(8)
+      // .limit(4)
+      .exec();
 
     res.json(posts);
   } catch (error) {
