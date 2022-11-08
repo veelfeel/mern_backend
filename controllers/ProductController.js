@@ -4,6 +4,7 @@ export const create = async (req, res) => {
   try {
     const doc = new ProductModel({
       title: req.body.title,
+      brand: req.body.brand,
       price: req.body.price,
       imageUrl: req.body.imageUrl,
     });
@@ -25,20 +26,40 @@ export const getAll = async (req, res) => {
     const limit = parseInt(req.query.limit) || 5;
     const search = req.query.search || '';
     // const sort = req.query.sort;
+    let brand = req.query.brand || 'All';
+
+    const brandOptions = [
+      'Rovex',
+      'JAX',
+      'Ballu',
+      'Electrolux',
+      'Zanussi',
+      'Toshiba',
+      'Shuft',
+      'Denko',
+      'Centek',
+      'Lessar',
+    ];
+
+    brand === 'All' ? (brand = [...brandOptions]) : (brand = req.query.brand.split(','));
 
     const products = await ProductModel.find({ title: { $regex: search, $options: 'i' } })
+      .where('brand')
+      .in([...brand])
       // .sort({ price: 'asc' })
       .skip(page * limit)
       .limit(limit)
       .exec();
 
     const total = await ProductModel.countDocuments({
+      brand: { $in: [...brand] },
       title: { $regex: search, $options: 'i' },
     });
 
     const response = {
       total,
       limit,
+      brands: brandOptions,
       products,
     };
 
@@ -94,6 +115,7 @@ export const update = async (req, res) => {
       },
       {
         title: req.body.title,
+        brand: req.body.brand,
         price: req.body.price,
         imageUrl: req.body.imageUrl,
       },

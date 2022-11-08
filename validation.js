@@ -14,6 +14,7 @@ export const loginValidation = [
 
 export const productCreateValidation = [
   body('title', 'Введите название товара').isLength({ min: 3 }).isString(),
+  body('brand', 'Введите название бренда').isLength({ min: 3 }).isString(),
   body('price', 'Введите цену товара').isLength({ min: 3 }).isNumeric(),
   body('imageUrl', 'Неверная сылка на изображение').optional().isString(),
 ];
