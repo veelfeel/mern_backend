@@ -35,6 +35,7 @@ export const getAll = async (req, res) => {
     const total = await ProductModel.countDocuments({
       title: { $regex: search, $options: 'i' },
     });
+
     const response = {
       total,
       limit,
