@@ -6,7 +6,19 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    inverter: {
+      type: String,
+      required: true,
+    },
+    area: {
+      type: String,
+      required: true,
+    },
     brand: {
+      type: String,
+      required: true,
+    },
+    country: {
       type: String,
       required: true,
     },
