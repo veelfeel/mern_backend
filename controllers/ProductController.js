@@ -1,4 +1,5 @@
 import ProductModel from '../models/Product.js';
+import dataOptions from '../dataOptions.js';
 
 export const create = async (req, res) => {
   try {
@@ -29,79 +30,44 @@ export const getAll = async (req, res) => {
     const limit = parseInt(req.query.limit) || 5;
     const search = req.query.search || '';
     // const sort = req.query.sort;
-    let inverter = req.query.inverter || 'All';
-    let area = req.query.area || 'All';
-    let brand = req.query.brand || 'All';
-    let country = req.query.country;
+    const inverter = req.query.inverter ? req.query.inverter.split(',') : dataOptions.inverter;
+    const area = req.query.area ? req.query.area.split(',') : dataOptions.area;
+    const brand = req.query.brand ? req.query.brand.split(',') : dataOptions.brand;
+    const country =
+      req.query.country !== 'Все страны' ? req.query.country.split(',') : dataOptions.country;
 
-    const inverterOptions = ['есть', 'нет'];
-    const areaOptions = [
-      '15 м² - 20 м²',
-      '25 м² - 30 м²',
-      '30 м² - 40 м²',
-      '40 м² - 50 м²',
-      '60 м² - 70 м²',
-      '70 м² - 80 м²',
-      '100 м²',
-    ];
-    const brandOptions = [
-      'Rovex',
-      'JAX',
-      'Ballu',
-      'Electrolux',
-      'Zanussi',
-      'Toshiba',
-      'Shuft',
-      'Denko',
-      'Centek',
-      'Lessar',
-    ];
-    const countryOptions = ['Все страны', 'Турция', 'Китай', 'Франция', 'Италия'];
-
-    inverter === 'All'
-      ? (inverter = [...inverterOptions])
-      : (inverter = req.query.inverter.split(','));
-    area === 'All' ? (area = [...areaOptions]) : (area = req.query.area.split(','));
-    brand === 'All' ? (brand = [...brandOptions]) : (brand = req.query.brand.split(','));
-    country === 'Все страны'
-      ? (country = [...countryOptions])
-      : (country = Array(req.query.country));
-
-    const products = await ProductModel.find({ title: { $regex: search, $options: 'i' } })
-      .where('inverter')
-      .in([...inverter])
-      .where('area')
-      .in([...area])
-      .where('brand')
-      .in([...brand])
-      .where('country')
-      .in([...country])
+    const products = await ProductModel.find({
+      $and: [
+        { title: { $regex: search, $options: 'i' } },
+        { inverter: { $in: inverter } },
+        { area: { $in: area } },
+        { brand: { $in: brand } },
+        { country: { $in: country } },
+      ],
+    })
       // .sort({ price: 'asc' })
       .skip(page * limit)
-      .limit(limit)
-      .exec();
+      .limit(limit);
 
     const total = await ProductModel.countDocuments({
-      inverter: { $in: [...inverter] },
-      area: { $in: [...area] },
-      brand: { $in: [...brand] },
-      country: { $in: [...country] },
       title: { $regex: search, $options: 'i' },
+      inverter: { $in: inverter },
+      area: { $in: area },
+      brand: { $in: brand },
+      country: { $in: country },
     });
 
     const response = {
       total,
       limit,
-      inverterTechnology: inverterOptions,
-      areas: areaOptions,
-      brands: brandOptions,
-      countries: countryOptions,
+      inverterTechnology: dataOptions.inverter,
+      areas: dataOptions.area,
+      brands: dataOptions.brand,
+      countries: dataOptions.country,
       products,
     };
 
-    // setTimeout(() => {
     res.json(response);
-    // }, 150);
   } catch (error) {
     console.log(error);
     res.status(500).json({
