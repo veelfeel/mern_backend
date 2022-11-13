@@ -31,6 +31,8 @@ export const getAll = async (req, res) => {
     const search = req.query.search || '';
     // const sort = req.query.sort;
     const inverter = req.query.inverter ? req.query.inverter.split(',') : dataOptions.inverter;
+    const minPrice = req.query.minPrice || 0;
+    const maxPrice = req.query.maxPrice || 120000;
     const area = req.query.area ? req.query.area.split(',') : dataOptions.area;
     const brand = req.query.brand ? req.query.brand.split(',') : dataOptions.brand;
     const country =
@@ -40,6 +42,7 @@ export const getAll = async (req, res) => {
       $and: [
         { title: { $regex: search, $options: 'i' } },
         { inverter: { $in: inverter } },
+        { price: { $gt: minPrice, $lte: maxPrice } },
         { area: { $in: area } },
         { brand: { $in: brand } },
         { country: { $in: country } },
@@ -52,6 +55,7 @@ export const getAll = async (req, res) => {
     const total = await ProductModel.countDocuments({
       title: { $regex: search, $options: 'i' },
       inverter: { $in: inverter },
+      price: { $gt: minPrice, $lte: maxPrice },
       area: { $in: area },
       brand: { $in: brand },
       country: { $in: country },
