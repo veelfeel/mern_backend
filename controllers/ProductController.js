@@ -29,7 +29,8 @@ export const getAll = async (req, res) => {
     const page = parseInt(req.query.page) - 1 || 0;
     const limit = parseInt(req.query.limit) || 5;
     const search = req.query.search || '';
-    // const sort = req.query.sort;
+    const sortBy = req.query.sort;
+    const order = req.query.order;
     const inverter = req.query.inverter ? req.query.inverter.split(',') : dataOptions.inverter;
     const minPrice = req.query.minPrice || 0;
     const maxPrice = req.query.maxPrice || 120000;
@@ -48,7 +49,7 @@ export const getAll = async (req, res) => {
         { country: { $in: country } },
       ],
     })
-      // .sort({ price: 'asc' })
+      .sort({ price: order })
       .skip(page * limit)
       .limit(limit);
 
