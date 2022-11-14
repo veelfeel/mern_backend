@@ -23,6 +23,7 @@ export const productCreateValidation = [
     .isString(),
   body('brand', 'Введите название бренда').isLength({ min: 3 }).isString(),
   body('country', 'Введите страну производителя').isLength({ min: 3 }).isString(),
-  body('price', 'Введите цену товара').isLength({ min: 3 }).isNumeric(),
+  body('price', 'Введите цену товара').isLength({ min: 1 }).isNumeric(),
   body('imageUrl', 'Неверная сылка на изображение').optional().isString(),
+  body('rating', 'Добавьте рейтинг').isLength({ min: 1 }).isNumeric(),
 ];

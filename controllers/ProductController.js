@@ -11,6 +11,7 @@ export const create = async (req, res) => {
       country: req.body.country,
       price: req.body.price,
       imageUrl: req.body.imageUrl,
+      rating: req.body.rating,
     });
 
     const product = await doc.save();
@@ -29,7 +30,7 @@ export const getAll = async (req, res) => {
     const page = parseInt(req.query.page) - 1 || 0;
     const limit = parseInt(req.query.limit) || 5;
     const search = req.query.search || '';
-    const sortBy = req.query.sort;
+    const sortBy = req.query.sortBy;
     const order = req.query.order;
     const inverter = req.query.inverter ? req.query.inverter.split(',') : dataOptions.inverter;
     const minPrice = req.query.minPrice || 0;
@@ -38,6 +39,10 @@ export const getAll = async (req, res) => {
     const brand = req.query.brand ? req.query.brand.split(',') : dataOptions.brand;
     const country =
       req.query.country !== 'Все страны' ? req.query.country.split(',') : dataOptions.country;
+
+    let sort = {};
+    sort[sortBy] = order;
+    sort['_id'] = '1';
 
     const products = await ProductModel.find({
       $and: [
@@ -49,7 +54,7 @@ export const getAll = async (req, res) => {
         { country: { $in: country } },
       ],
     })
-      .sort({ price: order })
+      .sort(sort)
       .skip(page * limit)
       .limit(limit);
 
@@ -130,6 +135,7 @@ export const update = async (req, res) => {
         country: req.body.country,
         price: req.body.price,
         imageUrl: req.body.imageUrl,
+        rating: req.body.rating,
       },
     );
 
