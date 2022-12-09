@@ -1,5 +1,5 @@
-import ProductModel from '../models/Product.js';
-import dataOptions from '../dataOptions.js';
+import ProductModel from "../models/Product.js";
+import dataOptions from "../dataOptions.js";
 
 export const create = async (req, res) => {
   try {
@@ -15,12 +15,11 @@ export const create = async (req, res) => {
     });
 
     const product = await doc.save();
-
     res.json(product);
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: 'Не удалось создать товар',
+      message: "Не удалось создать товар",
     });
   }
 };
@@ -29,24 +28,30 @@ export const getAll = async (req, res) => {
   try {
     const page = parseInt(req.query.page) - 1 || 0;
     const limit = parseInt(req.query.limit) || 5;
-    const search = req.query.search || '';
+    const search = req.query.search || "";
     const sortBy = req.query.sortBy;
     const order = req.query.order;
-    const inverter = req.query.inverter ? req.query.inverter.split(',') : dataOptions.inverter;
+    const inverter = req.query.inverter
+      ? req.query.inverter.split(",")
+      : dataOptions.inverter;
     const minPrice = req.query.minPrice || 0;
     const maxPrice = req.query.maxPrice || 120000;
-    const area = req.query.area ? req.query.area.split(',') : dataOptions.area;
-    const brand = req.query.brand ? req.query.brand.split(',') : dataOptions.brand;
+    const area = req.query.area ? req.query.area.split(",") : dataOptions.area;
+    const brand = req.query.brand
+      ? req.query.brand.split(",")
+      : dataOptions.brand;
     const country =
-      req.query.country !== 'Все страны' ? req.query.country.split(',') : dataOptions.country;
+      req.query.country !== "Все страны"
+        ? req.query.country.split(",")
+        : dataOptions.country;
 
     let sort = {};
     sort[sortBy] = order;
-    sort['_id'] = '1';
+    sort["_id"] = "1";
 
     const products = await ProductModel.find({
       $and: [
-        { title: { $regex: search, $options: 'i' } },
+        { title: { $regex: search, $options: "i" } },
         { inverter: { $in: inverter } },
         { price: { $gt: minPrice, $lte: maxPrice } },
         { area: { $in: area } },
@@ -59,7 +64,7 @@ export const getAll = async (req, res) => {
       .limit(limit);
 
     const total = await ProductModel.countDocuments({
-      title: { $regex: search, $options: 'i' },
+      title: { $regex: search, $options: "i" },
       inverter: { $in: inverter },
       price: { $gt: minPrice, $lte: maxPrice },
       area: { $in: area },
@@ -81,7 +86,7 @@ export const getAll = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: 'Не удалось получить товары',
+      message: "Не удалось получить товары",
     });
   }
 };
@@ -98,23 +103,23 @@ export const getOne = async (req, res) => {
         if (err) {
           console.log(err);
           return res.status(500).json({
-            message: 'Не удалось вернуть товар',
+            message: "Не удалось вернуть товар",
           });
         }
 
         if (!doc) {
           return res.status(404).json({
-            message: 'Товар не найден',
+            message: "Товар не найден",
           });
         }
 
         res.json(doc);
-      },
+      }
     );
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: 'Не удалось получить товар',
+      message: "Не удалось получить товар",
     });
   }
 };
@@ -136,7 +141,7 @@ export const update = async (req, res) => {
         price: req.body.price,
         imageUrl: req.body.imageUrl,
         rating: req.body.rating,
-      },
+      }
     );
 
     res.json({
@@ -145,7 +150,7 @@ export const update = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: 'Не удалось обновить товар',
+      message: "Не удалось обновить товар",
     });
   }
 };
@@ -162,25 +167,25 @@ export const remove = async (req, res) => {
         if (err) {
           console.log(err);
           return res.status(500).json({
-            message: 'Не удалось удалить товар',
+            message: "Не удалось удалить товар",
           });
         }
 
         if (!doc) {
           return res.status(404).json({
-            message: 'Товар не найден',
+            message: "Товар не найден",
           });
         }
 
         res.json({
           success: true,
         });
-      },
+      }
     );
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: 'Не удалось получить товар',
+      message: "Не удалось получить товар",
     });
   }
 };
