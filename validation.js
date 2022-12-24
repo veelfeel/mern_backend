@@ -17,21 +17,19 @@ export const loginValidation = [
 ];
 
 export const productCreateValidation = [
-  body("title", "Введите название товара минимум из 3 букв")
-    .isLength({ min: 3 })
-    .isString(),
+  body("title", "Введите название товара").isLength({ min: 1 }).isString(),
   body("inverter", "Введите поддержку инверторной технологии")
-    .isLength({ min: 2 })
+    .isLength({ min: 1 })
     .isString(),
   body(
     "area",
     'Введите площадь помещения (Доступные варианты: "15 м² - 20 м²", "25 м² - 30 м²", "30 м² - 40 м²", "40 м² - 50 м²", "60 м² - 70 м²", "70 м² - 80 м²", "100 м²")'
   )
-    .isLength({ min: 3 })
+    .isLength({ min: 1 })
     .isString(),
-  body("brand", "Введите название бренда").isLength({ min: 3 }).isString(),
+  body("brand", "Введите название бренда").isLength({ min: 1 }).isString(),
   body("country", "Введите страну производителя")
-    .isLength({ min: 3 })
+    .isLength({ min: 1 })
     .isString(),
   body("price", "Введите цену товара").isLength({ min: 1 }).isNumeric(),
   body("imageUrl", "Неверная сылка на изображение").optional().isString(),
