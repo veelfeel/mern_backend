@@ -26,11 +26,11 @@ export const create = async (req, res) => {
 
 export const getAll = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) - 1 || 0;
+    let page = parseInt(req.query.page) - 1 || 0;
     const limit = parseInt(req.query.limit) || 5;
     const search = req.query.search || "";
-    const sortBy = req.query.sortBy;
-    const order = req.query.order;
+    const sortBy = req.query.sortBy || "rating";
+    const order = req.query.order || "1";
     const inverter = req.query.inverter
       ? req.query.inverter.split(",")
       : dataOptions.inverter;
@@ -41,13 +41,24 @@ export const getAll = async (req, res) => {
       ? req.query.brand.split(",")
       : dataOptions.brand;
     const country =
-      req.query.country !== "Все страны"
+      req.query.country && req.query.country !== "Все страны"
         ? req.query.country.split(",")
         : dataOptions.country;
 
     let sort = {};
     sort[sortBy] = order;
     sort["_id"] = "1";
+
+    const total = await ProductModel.countDocuments({
+      title: { $regex: search, $options: "i" },
+      inverter: { $in: inverter },
+      price: { $gt: minPrice, $lte: maxPrice },
+      area: { $in: area },
+      brand: { $in: brand },
+      country: { $in: country },
+    });
+
+    page = total - Math.floor(total / limit) * limit !== 0 ? page : 0;
 
     const products = await ProductModel.find({
       $and: [
@@ -62,15 +73,6 @@ export const getAll = async (req, res) => {
       .sort(sort)
       .skip(page * limit)
       .limit(limit);
-
-    const total = await ProductModel.countDocuments({
-      title: { $regex: search, $options: "i" },
-      inverter: { $in: inverter },
-      price: { $gt: minPrice, $lte: maxPrice },
-      area: { $in: area },
-      brand: { $in: brand },
-      country: { $in: country },
-    });
 
     const response = {
       total,
